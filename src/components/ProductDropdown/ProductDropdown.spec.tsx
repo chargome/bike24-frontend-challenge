@@ -16,8 +16,8 @@ describe('ProductDropdown', () => {
 
   it('should display values', () => {
     const products: Partial<Product>[] = [
-      { id: '1', productName: 'Product1' },
-      { id: '2', productName: 'Product2' },
+      { id: '1', productName: 'Product1', price: 10, taxRate: 1 },
+      { id: '2', productName: 'Product2', price: 12, taxRate: 1 },
     ];
     render(
       <ProductDropdown
@@ -27,12 +27,14 @@ describe('ProductDropdown', () => {
     );
 
     screen.getByText(/Select a product/).click();
-    expect(screen.getByText(/Product1/)).toBeVisible();
-    expect(screen.getByText(/Product2/)).toBeVisible();
+    expect(screen.getByText(/Product1 \(€10\)/)).toBeVisible();
+    expect(screen.getByText(/Product2 \(€12\)/)).toBeVisible();
   });
 
   it('should display selected value', () => {
-    const products: Partial<Product>[] = [{ id: '1', productName: 'Product1' }];
+    const products: Partial<Product>[] = [
+      { id: '1', productName: 'Product1', price: 10, taxRate: 1 },
+    ];
     render(
       <ProductDropdown
         data={products as Product[]}
@@ -40,6 +42,6 @@ describe('ProductDropdown', () => {
         setSelectedProduct={() => null}
       />,
     );
-    expect(screen.getByText(/Product1/)).toBeDefined();
+    expect(screen.getByText(/Product1 \(€10\)/)).toBeDefined();
   });
 });
