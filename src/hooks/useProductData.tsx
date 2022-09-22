@@ -1,3 +1,4 @@
+import React from 'react';
 import data from '../../data/products.json';
 
 interface Product {
@@ -9,7 +10,9 @@ interface Product {
 }
 
 export const useProductData = () => {
+  const products = React.useState(data as Product[]);
+
   return {
-    products: data as Product[],
+    products,
   };
 };
