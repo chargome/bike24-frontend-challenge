@@ -1,5 +1,6 @@
 import React from 'react';
 import { Product } from '../../model';
+import { getCalculatedPrice } from '../../util/price';
 
 interface Props {
   data: Product[];
@@ -41,7 +42,10 @@ export const ProductDropdown = ({
           .sort((a, b) => a.productName.localeCompare(b.productName))
           .map((product) => (
             <option key={product.id} value={product.id}>
-              {product.productName}
+              {`${product.productName} (€${getCalculatedPrice(
+                product.price,
+                product.taxRate,
+              )})`}
             </option>
           ))}
       </select>
