@@ -1,13 +1,6 @@
 import React from 'react';
 import data from '../../data/products.json';
-
-interface Product {
-  id: string;
-  productName: string;
-  maxAmount: number;
-  taxRate: number;
-  price: number;
-}
+import { Product } from '../model';
 
 export const useProductData = () => {
   const products = React.useState(data as Product[]);
