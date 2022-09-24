@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDebouncedValue, useProductData } from '../../hooks';
 import { Product } from '../../model';
+import { useShoppingCartStore } from '../../store';
 import { getCalculatedPrice } from '../../util/price';
 import { ProductDropdown } from '../ProductDropdown';
 import { ProductQuantityInput } from '../ProductQuantityInput';
@@ -10,6 +11,7 @@ export const AddProductForm = (): JSX.Element => {
   const [selectedProduct, setSelectedProduct] = React.useState<Product>();
   const [quantity, setQuantity] = React.useState(0);
   const debouncedQuantity = useDebouncedValue(quantity.toString());
+  const addProduct = useShoppingCartStore((state) => state.addProduct);
 
   const getTotal = React.useCallback(() => {
     if (selectedProduct) {
@@ -19,6 +21,12 @@ export const AddProductForm = (): JSX.Element => {
       );
     }
   }, [debouncedQuantity, selectedProduct]);
+
+  const handleAddProduct = React.useCallback(() => {
+    if (selectedProduct) {
+      addProduct({ ...selectedProduct, quantity });
+    }
+  }, [addProduct, quantity, selectedProduct]);
 
   // resets quantity to 1 whenever a new product is selected
   React.useEffect(() => {
@@ -43,7 +51,13 @@ export const AddProductForm = (): JSX.Element => {
         />
       </div>
       {selectedProduct && <div>{`Total: ${getTotal()}`}</div>}
-      <button className="btn btn-primary w-60">Add to cart</button>
+      <button
+        onClick={handleAddProduct}
+        className="btn btn-primary w-60"
+        disabled={!selectedProduct}
+      >
+        Add to cart
+      </button>
     </div>
   );
 };

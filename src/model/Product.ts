@@ -5,3 +5,7 @@ export interface Product {
   taxRate: number;
   price: number;
 }
+
+export interface ShoppingCartProduct extends Product {
+  quantity: number;
+}
