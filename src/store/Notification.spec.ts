@@ -18,19 +18,31 @@ describe('ShoppingCart store', () => {
     const { result } = renderHook(() => useNotificationStore());
     const hiMsg = 'Hi there!';
     await act(() => {
-      result.current.show(hiMsg);
+      result.current.show(hiMsg, 'success');
     });
     expect(result.current.isOpen).toBeDefined();
     expect(result.current.isOpen).toBe(true);
     expect(result.current.msg).toBeDefined();
     expect(result.current.msg).toEqual(hiMsg);
+    expect(result.current.variant).toEqual('success');
+  });
+
+  it('should show error notification', async () => {
+    const { result } = renderHook(() => useNotificationStore());
+    const errorMsg = 'some error!';
+    await act(() => {
+      result.current.show(errorMsg, 'error');
+    });
+    expect(result.current.isOpen).toBe(true);
+    expect(result.current.msg).toEqual(errorMsg);
+    expect(result.current.variant).toEqual('error');
   });
 
   it('should close notification', async () => {
     const { result } = renderHook(() => useNotificationStore());
     const hiMsg = 'Hi there!';
     await act(() => {
-      result.current.show(hiMsg);
+      result.current.show(hiMsg, 'success');
     });
     expect(result.current.isOpen).toBe(true);
     await act(() => {

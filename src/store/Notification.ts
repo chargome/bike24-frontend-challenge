@@ -1,15 +1,18 @@
 import create from 'zustand';
 
+type NotificationVariant = 'success' | 'error';
 interface NotificationState {
   isOpen: boolean;
   msg: string;
-  show: (msg: string) => void;
+  variant: NotificationVariant;
+  show: (msg: string, variant: NotificationVariant) => void;
   close: () => void;
 }
 
 export const useNotificationStore = create<NotificationState>((set) => ({
   isOpen: false,
   msg: '',
-  show: (msg: string) => set({ isOpen: true, msg }),
+  variant: 'success',
+  show: (msg: string, variant) => set({ isOpen: true, msg, variant }),
   close: () => set({ isOpen: false }),
 }));
