@@ -8,9 +8,9 @@ import { CartProductTable } from './CartProductTable';
 const mockProduct1: ShoppingCartProduct = {
   id: '1',
   productName: 'EBIKE',
-  price: 10,
+  price: 3,
   taxRate: 10,
-  quantity: 10,
+  quantity: 4,
   maxAmount: 100,
 };
 
@@ -29,6 +29,16 @@ describe('CartProductTable', () => {
     expect(screen.getByText(/Quantity/i)).toBeInTheDocument();
   });
 
+  it('should display price per unit header', () => {
+    render(<CartProductTable />);
+    expect(screen.getByText(/Price per unit/i)).toBeInTheDocument();
+  });
+
+  it('should display price header', () => {
+    render(<CartProductTable />);
+    expect(screen.getAllByText(/Price/i)[1]).toBeInTheDocument();
+  });
+
   it('should display product name', () => {
     render(<CartProductTable />);
     expect(screen.getByText(/EBIKE/i)).toBeInTheDocument();
@@ -36,6 +46,21 @@ describe('CartProductTable', () => {
 
   it('should display product quantity', () => {
     render(<CartProductTable />);
-    expect(screen.getByText(/10/i)).toBeInTheDocument();
+    expect(screen.getByText(/4/i)).toBeInTheDocument();
+  });
+
+  it('should display product price', () => {
+    render(<CartProductTable />);
+    expect(screen.getByText(/3/i)).toBeInTheDocument();
+  });
+
+  it('should display summed and total price', () => {
+    render(<CartProductTable />);
+    expect(screen.getAllByText(/12/i)).toHaveLength(2);
+  });
+
+  it('should display total header', () => {
+    render(<CartProductTable />);
+    expect(screen.getByText(/Total/i)).toBeInTheDocument();
   });
 });
