@@ -4,6 +4,7 @@ import * as store from '../../store';
 import { ShoppingCartProduct } from '../../model';
 import { render, screen } from '../../test/test-utils';
 import { CartProductTable } from './CartProductTable';
+import { act } from 'react-dom/test-utils';
 
 const mockProduct1: ShoppingCartProduct = {
   id: '1',
@@ -15,8 +16,10 @@ const mockProduct1: ShoppingCartProduct = {
 };
 
 describe('CartProductTable', () => {
+  const mockRemoveItem = vi.fn();
   vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
-    mockProduct1,
+    [mockProduct1],
+    mockRemoveItem,
   ]);
 
   it('should display product name header', () => {
@@ -62,5 +65,20 @@ describe('CartProductTable', () => {
   it('should display total header', () => {
     render(<CartProductTable />);
     expect(screen.getByText(/Total/i)).toBeInTheDocument();
+  });
+
+  it('should display delete icon', () => {
+    render(<CartProductTable />);
+    expect(
+      screen.getByTestId(`delete-icon-${mockProduct1.id}`),
+    ).toBeInTheDocument();
+  });
+
+  it('should call remove fn when clicking on icon', async () => {
+    render(<CartProductTable />);
+    await act(() => {
+      screen.getByTestId(`delete-icon-${mockProduct1.id}`).click();
+    });
+    expect(mockRemoveItem).toHaveBeenCalledOnce();
   });
 });
