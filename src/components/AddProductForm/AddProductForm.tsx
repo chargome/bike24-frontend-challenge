@@ -28,8 +28,9 @@ export const AddProductForm = (): JSX.Element => {
     if (selectedProduct) {
       try {
         await addProduct({ ...selectedProduct, quantity });
+        setQuantity(1);
       } catch (error) {
-        showNotification(error as string);
+        showNotification(error as string, 'error');
       }
     }
   }, [addProduct, quantity, selectedProduct, showNotification]);
