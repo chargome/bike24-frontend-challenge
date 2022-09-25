@@ -1,5 +1,6 @@
 import { AddProductForm } from '../AddProductForm';
 import { AppSection } from '../AppSection';
+import { CartActionArea } from '../CartActionArea';
 import { CartProductTable } from '../CartProductTable';
 
 export const App = (): JSX.Element => {
@@ -10,6 +11,8 @@ export const App = (): JSX.Element => {
       </AppSection>
       <AppSection>
         <CartProductTable />
+        <div className="divider" />
+        <CartActionArea />
       </AppSection>
     </div>
   );
