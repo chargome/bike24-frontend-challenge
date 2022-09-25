@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDebouncedValue, useProductData } from '../../hooks';
 import { Product } from '../../model';
-import { useShoppingCartStore } from '../../store';
+import { useNotificationStore, useShoppingCartStore } from '../../store';
 import { getCalculatedPrice } from '../../util/price';
 import { ProductDropdown } from '../ProductDropdown';
 import { ProductQuantityInput } from '../ProductQuantityInput';
@@ -12,6 +12,7 @@ export const AddProductForm = (): JSX.Element => {
   const [quantity, setQuantity] = React.useState(0);
   const debouncedQuantity = useDebouncedValue(quantity.toString());
   const addProduct = useShoppingCartStore((state) => state.addProduct);
+  const showNotification = useNotificationStore((state) => state.show);
 
   const getTotal = React.useCallback(() => {
     if (selectedProduct) {
@@ -23,11 +24,15 @@ export const AddProductForm = (): JSX.Element => {
     }
   }, [debouncedQuantity, selectedProduct]);
 
-  const handleAddProduct = React.useCallback(() => {
+  const handleAddProduct = React.useCallback(async () => {
     if (selectedProduct) {
-      addProduct({ ...selectedProduct, quantity });
+      try {
+        await addProduct({ ...selectedProduct, quantity });
+      } catch (error) {
+        showNotification(error as string);
+      }
     }
-  }, [addProduct, quantity, selectedProduct]);
+  }, [addProduct, quantity, selectedProduct, showNotification]);
 
   // resets quantity to 1 whenever a new product is selected
   React.useEffect(() => {
