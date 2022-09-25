@@ -1,9 +1,13 @@
 import React from 'react';
+import { DeleteIcon } from '../../icons';
 import { useShoppingCartStore } from '../../store';
 import { calculateTotalOfCart, getCalculatedPrice } from '../../util/price';
 
 export const CartProductTable = (): JSX.Element => {
-  const products = useShoppingCartStore((state) => state.products);
+  const [products, removeProduct] = useShoppingCartStore((state) => [
+    state.products,
+    state.removeProduct,
+  ]);
 
   const getTotal = React.useCallback(
     () => calculateTotalOfCart(products),
@@ -15,11 +19,12 @@ export const CartProductTable = (): JSX.Element => {
       <table className="table w-full">
         <thead>
           <tr>
-            <th></th>
+            <th />
             <th>Product</th>
             <th className="text-end">Price per unit</th>
             <th className="text-end">Quantity</th>
             <th className="text-end">Price</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -35,6 +40,15 @@ export const CartProductTable = (): JSX.Element => {
                   taxRateInPercent: product.taxRate,
                   quantity: product.quantity,
                 })}
+              </td>
+              <td>
+                <div
+                  className="cursor-pointer text-red-500 hover:text-red-700"
+                  onClick={() => removeProduct(product.id)}
+                  data-testid={`delete-icon-${product.id}`}
+                >
+                  <DeleteIcon />
+                </div>
               </td>
             </tr>
           ))}
