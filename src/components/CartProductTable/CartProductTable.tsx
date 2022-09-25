@@ -52,11 +52,9 @@ export const CartProductTable = (): JSX.Element => {
               </td>
             </tr>
           ))}
-          <tr>
-            <th className="text-primary text-end" colSpan={4}>
-              Total
-            </th>
-            <td className="text-primary text-end font-bold">{getTotal()}</td>
+          <tr className="text-primary text-end font-bold">
+            <td colSpan={4}>Total</td>
+            <td>{getTotal()}</td>
           </tr>
         </tbody>
       </table>

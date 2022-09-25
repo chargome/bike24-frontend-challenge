@@ -1,3 +1,25 @@
+# setup
+
+## install
+`npm i`
+
+## run app
+- `npm run dev`
+- app is visible on `http://localhost/5173`
+
+## run unit tests
+`npm run test`
+
+## run e2e tests
+`npm run test:e2e`
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+
 # Greetings and welcome to the Bike24 Frontend challenge
 
 ![UI example](https://github.com/Bike24/FrontendCodingChallenge/blob/main/assets/ui_example.png?raw=true)

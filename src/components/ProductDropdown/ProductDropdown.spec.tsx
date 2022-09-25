@@ -27,8 +27,8 @@ describe('ProductDropdown', () => {
     );
 
     screen.getByText(/Select a product/).click();
-    expect(screen.getByText(/Product1 \(€10\)/)).toBeVisible();
-    expect(screen.getByText(/Product2 \(€12\)/)).toBeVisible();
+    expect(screen.getByText(/Product1 \(10\)/)).toBeVisible();
+    expect(screen.getByText(/Product2 \(12\)/)).toBeVisible();
   });
 
   it('should display selected value', () => {
@@ -42,6 +42,6 @@ describe('ProductDropdown', () => {
         setSelectedProduct={() => null}
       />,
     );
-    expect(screen.getByText(/Product1 \(€10\)/)).toBeDefined();
+    expect(screen.getByText(/Product1 \(10\)/)).toBeDefined();
   });
 });
