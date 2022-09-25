@@ -1,4 +1,5 @@
-import { useShoppingCartStore } from '../../store';
+import React from 'react';
+import { useNotificationStore, useShoppingCartStore } from '../../store';
 import { calculateTotalOfCart } from '../../util/price';
 import { ProductAmountProgress } from '../ProductAmountProgress';
 
@@ -6,6 +7,12 @@ export const CartActionArea = (): JSX.Element => {
   const [products, maxProductsInCart, clearCart] = useShoppingCartStore(
     (state) => [state.products, state.maxProductsInCart, state.clearCart],
   );
+  const showNotification = useNotificationStore((store) => store.show);
+
+  const handleClickBuy = React.useCallback(() => {
+    clearCart();
+    showNotification('Your order has been sent successfully!', 'success');
+  }, [clearCart, showNotification]);
 
   if (products.length < 1) {
     return (
@@ -32,6 +39,7 @@ export const CartActionArea = (): JSX.Element => {
             <button
               disabled={products.length < 1}
               className="btn btn-success mr-3 w-40"
+              onClick={handleClickBuy}
             >
               Buy
             </button>
