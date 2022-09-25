@@ -24,7 +24,7 @@ export const CartActionArea = (): JSX.Element => {
 
   return (
     <div className="flex justify-center">
-      <div className="stats bg-primary text-primary-content">
+      <div className="stats stats-vertical md:stats-horizontal bg-primary text-primary-content">
         <div className="stat">
           <div className="stat-title">Products in Cart</div>
           <ProductAmountProgress
