@@ -4,13 +4,18 @@ import * as store from '../../store';
 import { render, screen } from '../../test/test-utils';
 import { CartActionArea } from './CartActionArea';
 import { act } from 'react-dom/test-utils';
+import { mockProduct1 } from '../../test/mock-products';
 
 describe('CartProductTable', () => {
-  const mockClearCart = vi.fn();
-  vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
-    1,
-    mockClearCart,
-  ]);
+  let mockClearCart = vi.fn();
+  beforeEach(() => {
+    mockClearCart = vi.fn();
+    vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
+      [mockProduct1],
+      10,
+      mockClearCart,
+    ]);
+  });
 
   it('should display clear cart button', () => {
     render(<CartActionArea />);
@@ -22,35 +27,44 @@ describe('CartProductTable', () => {
     expect(screen.getByText(/buy/i)).toBeInTheDocument();
   });
 
-  it('should disable buttons when cart is empty', () => {
+  it('should show message when cart is empty', () => {
     vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
-      0,
+      [],
+      10,
       mockClearCart,
     ]);
     render(<CartActionArea />);
-    expect(screen.getByText(/buy/i)).toBeDisabled();
-    expect(screen.getByText(/clear entire cart/i)).toBeDisabled();
+    expect(
+      screen.getByText(/Add some products to your cart!/i),
+    ).toBeInTheDocument();
   });
 
   it('should not disable buttons when cart has items', () => {
-    vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
-      1,
-      mockClearCart,
-    ]);
     render(<CartActionArea />);
     expect(screen.getByText(/buy/i)).not.toBeDisabled();
     expect(screen.getByText(/clear entire cart/i)).not.toBeDisabled();
   });
 
   it('should call clear cart when button is clicked', async () => {
-    vi.spyOn(store, 'useShoppingCartStore').mockImplementation(() => [
-      1,
-      mockClearCart,
-    ]);
     render(<CartActionArea />);
     await act(() => {
       screen.getByText(/clear entire cart/i).click();
     });
     expect(mockClearCart).toHaveBeenCalledOnce();
+  });
+
+  it('should display total cart header', () => {
+    render(<CartActionArea />);
+    expect(screen.getByText(/Total cart value/i)).toBeInTheDocument();
+  });
+
+  it('should display products in cart header', async () => {
+    render(<CartActionArea />);
+    expect(screen.getByText(/Products in cart/i)).toBeInTheDocument();
+  });
+
+  it('should display products in cart amount', async () => {
+    render(<CartActionArea />);
+    expect(screen.getByText('1 / 10')).toBeInTheDocument();
   });
 });

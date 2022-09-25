@@ -22,6 +22,17 @@ const mockProduct2: ShoppingCartProduct = {
   maxAmount: 100,
 };
 
+const mockProducts1to10: ShoppingCartProduct[] = Array.from(
+  Array(10).keys(),
+).map((item) => ({
+  id: `mockid${item}`,
+  productName: `Product ${item}`,
+  price: 10,
+  taxRate: 10,
+  quantity: 1,
+  maxAmount: 100,
+}));
+
 describe('ShoppingCart store', () => {
   beforeEach(() => {
     const { result } = renderHook(() => useShoppingCartStore());
@@ -108,5 +119,26 @@ describe('ShoppingCart store', () => {
     });
     expect(result.current.products).toBeDefined();
     expect(result.current.products).toHaveLength(0);
+  });
+
+  it('should return max product amount', () => {
+    const { result } = renderHook(() => useShoppingCartStore());
+    expect(result.current.maxProductsInCart).toBeDefined();
+    expect(result.current.maxProductsInCart).toEqual(10);
+  });
+
+  it('should reject when exceeding max amount of products in cart', async () => {
+    const { result } = renderHook(() => useShoppingCartStore());
+    await act(async () => {
+      const promises = mockProducts1to10.map((prod) =>
+        result.current.addProduct(prod),
+      );
+      await Promise.all(promises);
+    });
+    await act(async () => {
+      await expect(result.current.addProduct(mockProduct2)).rejects.toThrow();
+    });
+    expect(result.current.products).toBeDefined();
+    expect(result.current.products).toHaveLength(10);
   });
 });
