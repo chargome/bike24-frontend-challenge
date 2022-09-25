@@ -42,10 +42,10 @@ export const ProductDropdown = ({
           .sort((a, b) => a.productName.localeCompare(b.productName))
           .map((product) => (
             <option key={product.id} value={product.id}>
-              {`${product.productName} (€${getCalculatedPrice(
-                product.price,
-                product.taxRate,
-              )})`}
+              {`${product.productName} (€${getCalculatedPrice({
+                price: product.price,
+                taxRateInPercent: product.taxRate,
+              })})`}
             </option>
           ))}
       </select>

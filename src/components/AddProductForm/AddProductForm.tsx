@@ -15,10 +15,11 @@ export const AddProductForm = (): JSX.Element => {
 
   const getTotal = React.useCallback(() => {
     if (selectedProduct) {
-      return (
-        Number(debouncedQuantity) *
-        getCalculatedPrice(selectedProduct.price, selectedProduct.taxRate)
-      );
+      return getCalculatedPrice({
+        price: selectedProduct.price,
+        taxRateInPercent: selectedProduct.taxRate,
+        quantity: Number(debouncedQuantity),
+      });
     }
   }, [debouncedQuantity, selectedProduct]);
 
