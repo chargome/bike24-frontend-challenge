@@ -42,13 +42,13 @@ export const CartProductTable = (): JSX.Element => {
                 })}
               </td>
               <td>
-                <div
-                  className="cursor-pointer text-red-500 hover:text-red-700"
+                <button
+                  className="btn btn-error btn-outline btn-circle"
                   onClick={() => removeProduct(product.id)}
                   data-testid={`delete-icon-${product.id}`}
                 >
                   <DeleteIcon />
-                </div>
+                </button>
               </td>
             </tr>
           ))}
