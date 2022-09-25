@@ -1,8 +1,11 @@
 import { ShoppingCartProduct } from '../model';
 import create from 'zustand';
 
+const MAX_PRODUCTS_IN_CART = 10;
+
 interface ShoppingCartStore {
   products: ShoppingCartProduct[];
+  maxProductsInCart: number;
   addProduct: (product: ShoppingCartProduct) => Promise<void>;
   removeProduct: (productId: string) => void;
   clearCart: () => void;
@@ -27,15 +30,22 @@ const canAddProduct = (
 
 export const useShoppingCartStore = create<ShoppingCartStore>((set, get) => ({
   products: [],
+  maxProductsInCart: MAX_PRODUCTS_IN_CART,
   addProduct: async (product: ShoppingCartProduct) => {
     const products = get().products;
+    const maxAmount = get().maxProductsInCart;
     const storedProductIndex = getStoredProductIndex(products, product);
     return new Promise((res, rej) => {
+      // new product
       if (storedProductIndex === -1) {
-        set({ products: [...products, product] });
-        res();
+        if (products.length < maxAmount) {
+          set({ products: [...products, product] });
+          res();
+        }
+        rej('max product amount reached');
       }
 
+      // existing product
       if (canAddProduct(products[storedProductIndex], product)) {
         const newProducts = [...products];
         newProducts[storedProductIndex].quantity += product.quantity;

@@ -11,9 +11,8 @@ export const App = (): JSX.Element => {
       </AppSection>
       <AppSection>
         <CartProductTable />
-        <div className="divider" />
-        <CartActionArea />
       </AppSection>
+      <CartActionArea />
     </div>
   );
 };
